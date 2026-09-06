@@ -1,0 +1,160 @@
+/* Shared stylesheet for all Go-job-prep lessons and reference docs.
+   Tufte-ish: generous margins, serif body, restrained palette, prints well. */
+
+:root {
+  --ink: #1a1a1a;
+  --paper: #fdfcf9;
+  --muted: #6b6b6b;
+  --rule: #d8d4c8;
+  --accent: #007d9c;          /* Go gopher blue */
+  --accent-soft: #e3f1f5;
+  --code-bg: #f4f2ec;
+  --good: #1a7f37;
+  --bad: #b3261e;
+  --maxw: 42rem;
+}
+
+* { box-sizing: border-box; }
+
+html { font-size: 18px; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0 auto;
+  padding: 4rem 1.5rem 6rem;
+  max-width: var(--maxw);
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Charter, Georgia, "Times New Roman", serif;
+  line-height: 1.6;
+}
+
+h1, h2, h3 {
+  font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  line-height: 1.2;
+  font-weight: 650;
+}
+
+h1 { font-size: 1.9rem; margin: 0 0 .3rem; }
+h2 { font-size: 1.3rem; margin: 2.6rem 0 .8rem; padding-top: .6rem; border-top: 1px solid var(--rule); }
+h3 { font-size: 1.05rem; margin: 1.6rem 0 .5rem; }
+
+.kicker {
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: .72rem;
+  color: var(--accent);
+  font-weight: 700;
+  margin-bottom: 1.4rem;
+}
+
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+code, pre, kbd, samp {
+  font-family: "SF Mono", "JetBrains Mono", Menlo, Consolas, monospace;
+  font-size: .86em;
+}
+
+code { background: var(--code-bg); padding: .1em .35em; border-radius: 3px; }
+
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  line-height: 1.5;
+}
+pre code { background: none; padding: 0; }
+
+blockquote {
+  margin: 1.4rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid var(--accent);
+  color: var(--muted);
+  font-style: italic;
+}
+
+.aside {
+  font-size: .9rem;
+  color: var(--muted);
+  background: var(--accent-soft);
+  border-radius: 6px;
+  padding: .8rem 1rem;
+  margin: 1.4rem 0;
+}
+
+.callout {
+  border: 1px solid var(--rule);
+  border-radius: 6px;
+  padding: 1rem 1.1rem;
+  margin: 1.4rem 0;
+  background: #fff;
+}
+.callout h3 { margin-top: 0; }
+
+hr { border: 0; border-top: 1px solid var(--rule); margin: 2.5rem 0; }
+
+.nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: .85rem;
+  margin-top: 3.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--rule);
+}
+
+.source {
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: .9rem;
+  background: #fff;
+  border: 1px dashed var(--accent);
+  border-radius: 6px;
+  padding: .9rem 1.1rem;
+  margin: 1.6rem 0;
+}
+.source strong { color: var(--accent); }
+
+.teacher-note {
+  font-family: -apple-system, "Segoe UI", Roboto, sans-serif;
+  font-size: .85rem;
+  color: var(--muted);
+  margin-top: 2.5rem;
+  font-style: italic;
+}
+
+table { border-collapse: collapse; width: 100%; margin: 1.4rem 0; font-size: .92rem; }
+th, td { border: 1px solid var(--rule); padding: .5rem .7rem; text-align: left; vertical-align: top; }
+th { background: var(--code-bg); font-family: -apple-system, sans-serif; }
+
+/* Quiz widget (see assets/quiz.js) */
+.quiz { margin: 1.6rem 0; }
+.quiz-q { font-weight: 600; margin-bottom: .7rem; font-family: -apple-system, "Segoe UI", Roboto, sans-serif; }
+.quiz-opt {
+  display: block;
+  width: 100%;
+  text-align: left;
+  font: inherit;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 5px;
+  padding: .55rem .8rem;
+  margin: .4rem 0;
+  cursor: pointer;
+}
+.quiz-opt:hover { border-color: var(--accent); }
+.quiz-opt:disabled { cursor: default; opacity: .95; }
+.quiz-opt.correct { border-color: var(--good); background: #eaf6ec; }
+.quiz-opt.wrong { border-color: var(--bad); background: #fbeae9; }
+.quiz-fb { margin-top: .5rem; font-size: .92rem; min-height: 1.2rem; }
+.quiz-fb.correct { color: var(--good); }
+.quiz-fb.wrong { color: var(--bad); }
+
+@media print {
+  body { padding: 0; max-width: none; font-size: 11pt; }
+  .nav, .quiz-opt:hover { all: unset; }
+  a { color: var(--ink); text-decoration: none; }
+  pre, .callout, .source { break-inside: avoid; }
+}

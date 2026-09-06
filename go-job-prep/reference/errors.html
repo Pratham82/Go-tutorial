@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reference: Go Error Handling</title>
+<link rel="stylesheet" href="../assets/styles.css">
+</head>
+<body>
+
+<div class="kicker">Go-job-prep · Reference</div>
+<h1>Go Error Handling — Cheat Sheet</h1>
+<p class="muted">Compressed essence. For the lesson, see
+<a href="../lessons/0001-go-error-handling.html">Lesson 0001</a>.</p>
+
+<h2>The core idea</h2>
+<p><code>error</code> is just an interface:</p>
+<pre><code>type error interface {
+    Error() string
+}</code></pre>
+<p>Errors are ordinary <em>values</em>. Functions that can fail return one as the
+last result. The caller checks it. There are no exceptions.</p>
+<pre><code>f, err := os.Open("config.yaml")
+if err != nil {
+    return err            // handle, or hand it up
+}
+defer f.Close()</code></pre>
+
+<h2>Creating errors</h2>
+<table>
+<tr><th>Form</th><th>Code</th><th>Use when</th></tr>
+<tr><td>Ad‑hoc</td><td><code>errors.New("cache miss")</code></td><td>One‑off, no one needs to match on it</td></tr>
+<tr><td>Formatted</td><td><code>fmt.Errorf("id %d: %v", id, err)</code></td><td>Need context; caller won't unwrap</td></tr>
+<tr><td>Wrapped</td><td><code>fmt.Errorf("loading user: %w", err)</code></td><td>Add context <em>and</em> let caller unwrap</td></tr>
+<tr><td>Sentinel</td><td><code>var ErrNotFound = errors.New("not found")</code></td><td>Caller compares with <code>errors.Is</code></td></tr>
+<tr><td>Typed</td><td><code>type ValidationError struct { Field string }</code></td><td>Caller needs structured data via <code>errors.As</code></td></tr>
+</table>
+
+<h2>Inspecting errors (Go 1.13+)</h2>
+<pre><code>// Is: does the chain contain this specific sentinel value?
+if errors.Is(err, sql.ErrNoRows) {
+    return nil, ErrNotFound
+}
+
+// As: does the chain contain an error of this type? If so, bind it.
+var verr *ValidationError
+if errors.As(err, &verr) {
+    http.Error(w, verr.Field+" is invalid", 400)
+}
+
+// Unwrap: one step down the chain (rarely called directly).
+inner := errors.Unwrap(err)
+
+// Join: combine several errors (Go 1.20+). Is/As see all of them.
+err := errors.Join(err1, err2)</code></pre>
+
+<div class="callout">
+<h3>Rule of thumb</h3>
+<p><strong>Wrap with <code>%w</code></strong> when a caller upstream might reasonably
+want to detect the underlying cause. <strong>Use <code>%v</code></strong> (no wrap)
+when the underlying error is an implementation detail you don't want to leak into
+your API's contract.</p>
+</div>
+
+<h2>Custom error type — the full pattern</h2>
+<pre><code>type ValidationError struct {
+    Field string
+    Err   error            // optional wrapped cause
+}
+
+func (e *ValidationError) Error() string {
+    return fmt.Sprintf("validation failed on %s: %v", e.Field, e.Err)
+}
+
+func (e *ValidationError) Unwrap() error { return e.Err }  // makes errors.Is/As reach Err</code></pre>
+
+<h2>Style rules (from Go Code Review Comments)</h2>
+<ul>
+<li>Error strings are <strong>not capitalised</strong> and have <strong>no trailing punctuation</strong>:
+<code>"cannot parse config"</code>, not <code>"Cannot parse config."</code>
+(they get wrapped inside other strings).</li>
+<li>Handle an error <strong>once</strong>. Either log it or return it — not both.</li>
+<li>Add context as it goes up: <code>fmt.Errorf("loading user %d: %w", id, err)</code>.</li>
+<li>Don't <code>panic</code> for ordinary failures. <code>panic</code> is for
+programmer bugs / truly unrecoverable state.</li>
+<li>Name the variable <code>err</code>. Check it immediately, on the next line.</li>
+</ul>
+
+<h2>Decision flow</h2>
+<pre><code>function can fail?
+  └─ return error as last value
+       caller: can it do something useful about it?
+         ├─ yes → handle here (retry, default, translate to HTTP status)
+         └─ no  → add context with %w and return it upward
+       at the top (main / HTTP handler):
+         └─ log it once (structured), return a clean message to the user</code></pre>
+
+<div class="source">
+<strong>Primary sources:</strong>
+<a href="https://go.dev/blog/go1.13-errors">Working with Errors in Go 1.13</a> ·
+<a href="https://go.dev/blog/error-handling-and-go">Error handling and Go</a> ·
+<a href="https://pkg.go.dev/errors">errors package docs</a> ·
+<a href="https://go.dev/wiki/CodeReviewComments#error-strings">Code Review Comments: error strings</a>
+</div>
+
+<div class="nav">
+<a href="../lessons/0001-go-error-handling.html">← Lesson 0001: Error handling</a>
+<a href="../MISSION.md">Mission</a>
+<a href="../RESOURCES.md">Resources</a>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Lesson 0001 — Idiomatic Error Handling in Go</title>
+<link rel="stylesheet" href="../assets/styles.css">
+<script src="../assets/quiz.js"></script>
+</head>
+<body>
+
+<div class="kicker">Go-job-prep · Lesson 0001 · ~10 min</div>
+<h1>Errors are values</h1>
+<p><strong>The win:</strong> by the end you can look at any Go error and pick the
+right tool to inspect it, and wrap your own errors so callers upstream can still
+do that. This is table stakes in every backend codebase and a routine interview
+probe. It builds straight on the interface knowledge you just finished in the
+Tour — because <code>error</code> <em>is</em> an interface.</p>
+
+<h2>1. There are no exceptions</h2>
+<p>In the languages you already know, a failure <em>unwinds the stack</em> until
+someone catches it. Go does not do this. A function that can fail returns an
+extra value of type <code>error</code>, and the caller checks it:</p>
+
+<pre><code>f, err := os.Open("config.yaml")
+if err != nil {
+    return err
+}
+defer f.Close()</code></pre>
+
+<p><code>error</code> is the whole contract — a one‑method interface
+(<a href="https://go.dev/blog/error-handling-and-go">Error handling and Go</a>):</p>
+
+<pre><code>type error interface {
+    Error() string
+}</code></pre>
+
+<p>Because an error is just a value, you can store it, compare it, pass it around,
+and — the key move — <em>wrap</em> it with more context as it travels up.</p>
+
+<div class="aside">Convention: the error is the <em>last</em> return value and is
+named <code>err</code>. You check it on the very next line. Reviewers notice when
+you don't.</div>
+
+<div class="quiz"
+     data-question="Why does idiomatic Go avoid panic for an expected failure like a missing file?"
+     data-options='["Because panic unwinds the stack and skips normal control flow","Because panic is slower than returning an error value","Because panic cannot carry any message about the cause","Because panic is not allowed inside a package main"]'
+     data-answer="0"
+     data-explain="panic is for programmer bugs and unrecoverable state. Expected failures are returned as ordinary error values so the caller stays in control."></div>
+
+<h2>2. Making errors: four shapes</h2>
+<table>
+<tr><th>Shape</th><th>Example</th><th>Caller can…</th></tr>
+<tr><td>Ad‑hoc</td><td><code>errors.New("cache miss")</code></td><td>read the text</td></tr>
+<tr><td>With context</td><td><code>fmt.Errorf("user %d: %v", id, err)</code></td><td>read the text</td></tr>
+<tr><td>Sentinel</td><td><code>var ErrNotFound = errors.New("not found")</code></td><td><code>errors.Is(err, ErrNotFound)</code></td></tr>
+<tr><td>Typed</td><td><code>type ValidationError struct { Field string }</code></td><td><code>errors.As</code> → read <code>Field</code></td></tr>
+</table>
+
+<p>Reach for a <strong>sentinel</strong> when the caller only needs to ask "is it
+<em>this</em>?". Reach for a <strong>typed</strong> error when the caller needs
+<em>data</em> out of it (which field failed, which HTTP status to send).</p>
+
+<h2>3. Wrapping: <code>%w</code> vs <code>%v</code></h2>
+<p><code>fmt.Errorf</code> with the <code>%w</code> verb records the original error
+<em>inside</em> the new one, forming a chain
+(<a href="https://go.dev/blog/go1.13-errors">Working with Errors in Go 1.13</a>):</p>
+
+<pre><code>if err != nil {
+    return fmt.Errorf("loading user %d: %w", id, err)   // chain preserved
+}</code></pre>
+
+<p>Use <code>%v</code> instead when the inner error is an implementation detail you
+don't want to become part of your API's promise. <code>%w</code> = "callers may
+depend on this cause"; <code>%v</code> = "this cause is private".</p>
+
+<div class="quiz"
+     data-question="A handler returns fmt.Errorf(&quot;query failed: %v&quot;, sql.ErrNoRows). Upstream code runs errors.Is(err, sql.ErrNoRows). What happens?"
+     data-options='["It returns false because %v did not record the wrapped error","It returns true because the text still mentions the error","It returns true because errors.Is reads the message string","It panics because sql.ErrNoRows is not a sentinel value"]'
+     data-answer="0"
+     data-explain="%v flattens the cause into text only. Without %w there is no chain, so errors.Is cannot find sql.ErrNoRows."></div>
+
+<h2>4. Inspecting: <code>Is</code> and <code>As</code></h2>
+<pre><code>// Is — is this specific sentinel anywhere in the chain?
+if errors.Is(err, sql.ErrNoRows) {
+    return ErrNotFound
+}
+
+// As — is there an error of this type in the chain? If so, bind it.
+var verr *ValidationError
+if errors.As(err, &verr) {
+    writeStatus(w, 400, verr.Field+" is invalid")
+}</code></pre>
+
+<p>Both walk the whole <code>%w</code> chain for you. You almost never call
+<code>errors.Unwrap</code> by hand.</p>
+
+<p>To make <em>your</em> typed error transparent to this machinery, give it an
+<code>Unwrap</code> method:</p>
+
+<pre><code>func (e *ValidationError) Error() string { return "invalid " + e.Field }
+func (e *ValidationError) Unwrap() error { return e.Err }</code></pre>
+
+<div class="quiz"
+     data-question="You need to know which struct field a downstream validation error rejected. Which tool fits?"
+     data-options='["errors.As, because you need typed data out of the error","errors.Is, because you are comparing against a value","errors.Unwrap, because you must walk the chain yourself","err.Error(), because the field name is in the string"]'
+     data-answer="0"
+     data-explain="errors.As finds an error of your type in the chain and binds it to your variable, so you can read its fields directly."></div>
+
+<h2>5. Do it once</h2>
+<p>The most common review comment: <strong>handle an error once</strong>. Either
+log it or return it, never both — double‑logging makes production logs lie about
+how many things failed. Log at the edge (the HTTP handler or <code>main</code>),
+return everywhere below it.</p>
+
+<div class="callout">
+<h3>60‑second exercise</h3>
+<p>In your <code>go-projects/</code> area, write this and run it:</p>
+<pre><code>package main
+
+import (
+    "errors"
+    "fmt"
+)
+
+var ErrNotFound = errors.New("not found")
+
+func lookup(id int) error {
+    if id != 1 {
+        return fmt.Errorf("lookup id=%d: %w", id, ErrNotFound)
+    }
+    return nil
+}
+
+func main() {
+    err := lookup(42)
+    fmt.Println(err)
+    fmt.Println("is ErrNotFound?", errors.Is(err, ErrNotFound))
+}</code></pre>
+<p>Then change the <code>%w</code> to <code>%v</code> and re‑run. Watch the
+<code>errors.Is</code> line flip to <code>false</code>. That one character is the
+whole lesson.</p>
+</div>
+
+<div class="source">
+<strong>Read next (primary source):</strong>
+<a href="https://go.dev/blog/go1.13-errors">"Working with Errors in Go 1.13"</a> on
+the Go blog — the official explanation of <code>%w</code>, <code>errors.Is</code>,
+and <code>errors.As</code>. ~10 minutes.
+</div>
+
+<h2>Keep for reference</h2>
+<p><a href="../reference/errors.html">Reference: Go Error Handling — Cheat Sheet</a>
+— the compressed version to revisit before interviews.</p>
+
+<p class="teacher-note">I'm your teacher for this — if any of this is fuzzy
+(when to wrap, sentinel vs. typed, why "handle once"), ask me follow‑up questions
+in the chat. That's what I'm here for.</p>
+
+<div class="nav">
+<a href="../MISSION.md">Mission</a>
+<a href="../RESOURCES.md">Resources</a>
+<a href="../reference/errors.html">Cheat sheet →</a>
+</div>
+
+</body>
+</html>
