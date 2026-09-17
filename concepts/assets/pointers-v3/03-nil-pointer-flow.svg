@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 460" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#fef3e2"/></linearGradient>
+    <linearGradient id="grayBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#e2e8f0"/></linearGradient>
+    <linearGradient id="redBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fee2e2"/><stop offset="1" stop-color="#fecaca"/></linearGradient>
+    <linearGradient id="greenBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcfce7"/><stop offset="1" stop-color="#bbf7d0"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#3a2f22" flood-opacity="0.16"/></filter>
+    <marker id="arrowGray" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57534e"/></marker>
+    <marker id="arrowRed" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#b91c1c"/></marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker>
+  </defs>
+  <rect width="1000" height="460" rx="24" fill="url(#bg)"/>
+  <text x="500" y="48" text-anchor="middle" font-size="24" font-weight="700" fill="#3a2f22">A nil pointer points at nothing</text>
+
+  <!-- p box, empty -->
+  <g filter="url(#shadow)"><rect x="400" y="80" width="200" height="120" rx="18" fill="url(#grayBox)" stroke="#78716c" stroke-width="2.5" stroke-dasharray="8 6"/></g>
+  <text x="500" y="130" text-anchor="middle" font-size="24" font-weight="700" fill="#44403c">p</text>
+  <text x="500" y="160" text-anchor="middle" font-size="16" fill="#44403c">var p *int</text>
+  <text x="500" y="182" text-anchor="middle" font-size="16" font-weight="700" fill="#78716c">nil — no address</text>
+
+  <path d="M500 200 L500 240" stroke="#57534e" stroke-width="3" marker-end="url(#arrowGray)"/>
+  <polygon points="500,240 440,300 560,300" fill="#fef3c7" stroke="#b45309" stroke-width="2.5"/>
+  <text x="500" y="280" text-anchor="middle" font-size="30" font-weight="800" fill="#b45309">?</text>
+  <text x="500" y="315" text-anchor="middle" font-size="15" fill="#78716c" font-weight="700">*p ?</text>
+
+  <!-- left: nil guard -->
+  <path d="M470 315 C 380 350, 300 350, 240 370" fill="none" stroke="#15803d" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="330" y="345" text-anchor="middle" font-size="14" fill="#15803d" font-weight="700">if p != nil</text>
+  <g filter="url(#shadow)"><rect x="90" y="370" width="290" height="70" rx="16" fill="url(#greenBox)" stroke="#15803d" stroke-width="2.5"/></g>
+  <text x="235" y="402" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">safe: read the value</text>
+  <text x="235" y="424" text-anchor="middle" font-size="13" fill="#166534">guarded dereference ✓</text>
+
+  <!-- right: panic -->
+  <path d="M530 315 C 620 350, 700 350, 760 370" fill="none" stroke="#b91c1c" stroke-width="3" marker-end="url(#arrowRed)"/>
+  <text x="670" y="345" text-anchor="middle" font-size="14" fill="#b91c1c" font-weight="700">*p unguarded</text>
+  <g filter="url(#shadow)"><rect x="620" y="370" width="290" height="70" rx="16" fill="url(#redBox)" stroke="#b91c1c" stroke-width="2.5"/></g>
+  <text x="765" y="402" text-anchor="middle" font-size="16" font-weight="700" fill="#7f1d1d">PANIC 💥</text>
+  <text x="765" y="424" text-anchor="middle" font-size="12.5" fill="#991b1b">nil pointer dereference</text>
+</svg>

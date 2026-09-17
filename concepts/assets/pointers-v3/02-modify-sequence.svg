@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 480" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#fef3e2"/>
+    </linearGradient>
+    <linearGradient id="varBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#e0ecff"/><stop offset="1" stop-color="#c7dbff"/>
+    </linearGradient>
+    <linearGradient id="ptrBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffe6cc"/><stop offset="1" stop-color="#ffd0a3"/>
+    </linearGradient>
+    <linearGradient id="hotBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#dcfce7"/><stop offset="1" stop-color="#bbf7d0"/>
+    </linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#3a2f22" flood-opacity="0.16"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#c2410c"/>
+    </marker>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#15803d"/>
+    </marker>
+  </defs>
+  <rect width="1200" height="480" rx="24" fill="url(#bg)"/>
+  <text x="600" y="48" text-anchor="middle" font-size="24" font-weight="700" fill="#3a2f22">Writing through a pointer — three steps</text>
+
+  <!-- Panel 1 -->
+  <text x="185" y="100" text-anchor="middle" font-size="16" font-weight="700" fill="#57534e">① x := 42</text>
+  <g filter="url(#shadow)"><rect x="80" y="130" width="210" height="150" rx="18" fill="url(#varBox)" stroke="#1d4ed8" stroke-width="2.5"/></g>
+  <text x="185" y="195" text-anchor="middle" font-size="26" font-weight="700" fill="#1e3a8a">x</text>
+  <text x="185" y="230" text-anchor="middle" font-size="18" fill="#1e3a8a" font-weight="600">= 42</text>
+  <text x="185" y="255" text-anchor="middle" font-size="12" fill="#1e40af">addr 0xc0001</text>
+
+  <path d="M300 205 L340 205" stroke="#a8a29e" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Panel 2 -->
+  <text x="480" y="100" text-anchor="middle" font-size="16" font-weight="700" fill="#57534e">② p := &amp;x</text>
+  <g filter="url(#shadow)"><rect x="345" y="130" width="150" height="150" rx="18" fill="url(#ptrBox)" stroke="#c2410c" stroke-width="2.5"/></g>
+  <text x="420" y="195" text-anchor="middle" font-size="26" font-weight="700" fill="#7c2d12">p</text>
+  <text x="420" y="228" text-anchor="middle" font-size="14" fill="#7c2d12" font-weight="600">→0xc0001</text>
+  <text x="420" y="255" text-anchor="middle" font-size="12" fill="#9a3412">addr 0xc0002</text>
+  <g filter="url(#shadow)"><rect x="510" y="130" width="150" height="150" rx="18" fill="url(#varBox)" stroke="#1d4ed8" stroke-width="2.5"/></g>
+  <text x="585" y="195" text-anchor="middle" font-size="26" font-weight="700" fill="#1e3a8a">x</text>
+  <text x="585" y="228" text-anchor="middle" font-size="18" fill="#1e3a8a" font-weight="600">= 42</text>
+  <path d="M 495 175 C 500 150, 505 150, 508 175" fill="none" stroke="#c2410c" stroke-width="2.5" marker-end="url(#arrow)"/>
+
+  <path d="M 670 205 L 710 205" stroke="#a8a29e" stroke-width="3" marker-end="url(#arrow)"/>
+
+  <!-- Panel 3 -->
+  <text x="905" y="100" text-anchor="middle" font-size="16" font-weight="700" fill="#57534e">③ *p = 100  (writes through p)</text>
+  <g filter="url(#shadow)"><rect x="720" y="130" width="150" height="150" rx="18" fill="url(#ptrBox)" stroke="#c2410c" stroke-width="2.5"/></g>
+  <text x="795" y="195" text-anchor="middle" font-size="26" font-weight="700" fill="#7c2d12">p</text>
+  <text x="795" y="228" text-anchor="middle" font-size="14" fill="#7c2d12" font-weight="600">→0xc0001</text>
+  <g filter="url(#shadow)"><rect x="885" y="130" width="150" height="150" rx="18" fill="url(#hotBox)" stroke="#15803d" stroke-width="3"/></g>
+  <text x="960" y="195" text-anchor="middle" font-size="26" font-weight="700" fill="#14532d">x</text>
+  <text x="960" y="228" text-anchor="middle" font-size="18" fill="#14532d" font-weight="700">= 100 ✓</text>
+  <path d="M 870 175 C 878 150, 882 150, 888 175" fill="none" stroke="#15803d" stroke-width="3" marker-end="url(#arrowGreen)"/>
+  <text x="960" y="260" text-anchor="middle" font-size="12" fill="#166534">same box, new value</text>
+
+  <text x="600" y="340" text-anchor="middle" font-size="16" fill="#57534e">There is only ONE box for x the whole time.</text>
+  <text x="600" y="368" text-anchor="middle" font-size="16" fill="#57534e" font-weight="600">*p = 100 reaches through p's address and rewrites x directly.</text>
+  <text x="600" y="410" text-anchor="middle" font-size="15" fill="#78716c" font-style="italic">fmt.Println(x) now prints 100</text>
+</svg>

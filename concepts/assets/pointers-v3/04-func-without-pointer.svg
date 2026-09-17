@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 420" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#fef3e2"/></linearGradient>
+    <linearGradient id="varBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0ecff"/><stop offset="1" stop-color="#c7dbff"/></linearGradient>
+    <linearGradient id="grayBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#e2e8f0"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#3a2f22" flood-opacity="0.16"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#57534e"/></marker>
+  </defs>
+  <rect width="1000" height="420" rx="24" fill="url(#bg)"/>
+  <text x="500" y="46" text-anchor="middle" font-size="22" font-weight="700" fill="#3a2f22">double(x)  —  passing by VALUE</text>
+  <text x="500" y="72" text-anchor="middle" font-size="14" fill="#78716c">like handing over a photocopy, not the original document</text>
+
+  <!-- caller room -->
+  <rect x="60" y="110" width="330" height="260" rx="20" fill="#fff" stroke="#a8a29e" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="225" y="140" text-anchor="middle" font-size="15" font-weight="700" fill="#57534e">caller  (main)</text>
+  <g filter="url(#shadow)"><rect x="140" y="175" width="170" height="140" rx="16" fill="url(#varBox)" stroke="#1d4ed8" stroke-width="2.5"/></g>
+  <text x="225" y="235" text-anchor="middle" font-size="26" font-weight="700" fill="#1e3a8a">x</text>
+  <text x="225" y="265" text-anchor="middle" font-size="18" font-weight="700" fill="#1e3a8a">= 5</text>
+  <text x="225" y="290" text-anchor="middle" font-size="12" fill="#1e40af">0xc0001 — untouched</text>
+
+  <!-- photocopy arrow -->
+  <path d="M 400 240 C 470 240, 470 240, 540 240" stroke="#57534e" stroke-width="3" fill="none" marker-end="url(#arrow)" stroke-dasharray="2 6"/>
+  <text x="470" y="220" text-anchor="middle" font-size="22">📋</text>
+  <text x="470" y="270" text-anchor="middle" font-size="12" fill="#78716c">copies the value</text>
+
+  <!-- function room -->
+  <rect x="580" y="110" width="360" height="260" rx="20" fill="#fff" stroke="#a8a29e" stroke-width="2" stroke-dasharray="6 5"/>
+  <text x="760" y="140" text-anchor="middle" font-size="15" font-weight="700" fill="#57534e">inside double(n int)</text>
+  <g filter="url(#shadow)"><rect x="675" y="175" width="170" height="140" rx="16" fill="url(#grayBox)" stroke="#78716c" stroke-width="2.5"/></g>
+  <text x="760" y="230" text-anchor="middle" font-size="26" font-weight="700" fill="#44403c">n</text>
+  <text x="760" y="260" text-anchor="middle" font-size="18" font-weight="700" fill="#44403c">5 → 10</text>
+  <text x="760" y="285" text-anchor="middle" font-size="12" fill="#57534e">0xc0002 — own box</text>
+  <text x="760" y="305" text-anchor="middle" font-size="12" fill="#a8a29e" font-style="italic">discarded when func returns</text>
+
+  <text x="500" y="400" text-anchor="middle" font-size="16" fill="#57534e" font-weight="600">x is still 5 — the caller's box was never touched</text>
+</svg>

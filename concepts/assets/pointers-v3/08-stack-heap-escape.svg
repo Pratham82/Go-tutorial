@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 520" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#fef3e2"/></linearGradient>
+    <linearGradient id="blueBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#e0ecff"/><stop offset="1" stop-color="#c7dbff"/></linearGradient>
+    <linearGradient id="purpleBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3e8ff"/><stop offset="1" stop-color="#e9d5ff"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#3a2f22" flood-opacity="0.16"/></filter>
+    <marker id="arrowBlue" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#1d4ed8"/></marker>
+    <marker id="arrowPurple" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#7e22ce"/></marker>
+  </defs>
+  <rect width="1050" height="520" rx="24" fill="url(#bg)"/>
+  <text x="525" y="46" text-anchor="middle" font-size="24" font-weight="700" fill="#3a2f22">Escape analysis — where the compiler puts your value</text>
+
+  <!-- signpost -->
+  <rect x="230" y="78" width="590" height="56" rx="14" fill="#fff7ed" stroke="#b45309" stroke-width="2"/>
+  <text x="525" y="99" text-anchor="middle" font-size="15" font-weight="700" fill="#78716c">"Does a pointer to this value escape the function?"</text>
+  <text x="525" y="120" text-anchor="middle" font-size="12.5" fill="#a8a29e">(returned, stored globally, sent to a channel, etc.)</text>
+  <rect x="518" y="134" width="14" height="45" fill="#78716c"/>
+  <polygon points="525,179 493,199 557,199" fill="#fbbf24" stroke="#b45309" stroke-width="2"/>
+
+  <path d="M505 195 C 400 215, 300 220, 230 235" fill="none" stroke="#1d4ed8" stroke-width="3" marker-end="url(#arrowBlue)"/>
+  <text x="340" y="210" text-anchor="middle" font-size="15" fill="#1d4ed8" font-weight="700">No</text>
+  <path d="M545 195 C 650 215, 750 220, 820 235" fill="none" stroke="#7e22ce" stroke-width="3" marker-end="url(#arrowPurple)"/>
+  <text x="710" y="210" text-anchor="middle" font-size="15" fill="#7e22ce" font-weight="700">Yes</text>
+
+  <!-- Stack: small fast shelf -->
+  <g filter="url(#shadow)"><rect x="90" y="235" width="330" height="230" rx="20" fill="url(#blueBox)" stroke="#1d4ed8" stroke-width="3"/></g>
+  <text x="255" y="268" text-anchor="middle" font-size="19" font-weight="800" fill="#1e3a8a">📥 STACK</text>
+  <!-- shelf boxes -->
+  <rect x="140" y="290" width="60" height="40" rx="6" fill="#93c5fd" stroke="#1d4ed8"/>
+  <rect x="215" y="290" width="60" height="40" rx="6" fill="#93c5fd" stroke="#1d4ed8"/>
+  <rect x="290" y="290" width="60" height="40" rx="6" fill="#93c5fd" stroke="#1d4ed8"/>
+  <line x1="130" y1="340" x2="380" y2="340" stroke="#1d4ed8" stroke-width="3"/>
+  <text x="255" y="368" text-anchor="middle" font-size="13" fill="#1e3a8a">fast — just a shelf,</text>
+  <text x="255" y="386" text-anchor="middle" font-size="13" fill="#1e3a8a">auto-cleared when the</text>
+  <text x="255" y="404" text-anchor="middle" font-size="13" fill="#1e3a8a">function returns</text>
+  <text x="255" y="435" text-anchor="middle" font-size="12" fill="#1e40af" font-style="italic">localOnly(): x := 42</text>
+  <text x="255" y="453" text-anchor="middle" font-size="12" fill="#1e40af" font-style="italic">never leaves → stack</text>
+
+  <!-- Heap: warehouse -->
+  <g filter="url(#shadow)"><rect x="630" y="235" width="330" height="230" rx="20" fill="url(#purpleBox)" stroke="#7e22ce" stroke-width="3"/></g>
+  <text x="795" y="268" text-anchor="middle" font-size="19" font-weight="800" fill="#581c87">🏭 HEAP</text>
+  <rect x="670" y="290" width="50" height="50" rx="6" fill="#d8b4fe" stroke="#7e22ce"/>
+  <rect x="735" y="290" width="50" height="50" rx="6" fill="#d8b4fe" stroke="#7e22ce"/>
+  <rect x="800" y="290" width="50" height="50" rx="6" fill="#d8b4fe" stroke="#7e22ce"/>
+  <rect x="865" y="290" width="50" height="50" rx="6" fill="#d8b4fe" stroke="#7e22ce"/>
+  <text x="795" y="368" text-anchor="middle" font-size="13" fill="#581c87">large warehouse — the</text>
+  <text x="795" y="386" text-anchor="middle" font-size="13" fill="#581c87">garbage collector (♻️) sweeps</text>
+  <text x="795" y="404" text-anchor="middle" font-size="13" fill="#581c87">it once nothing points there</text>
+  <text x="795" y="435" text-anchor="middle" font-size="12" fill="#6b21a8" font-style="italic">newPerson(): return &amp;Person{...}</text>
+  <text x="795" y="453" text-anchor="middle" font-size="12" fill="#6b21a8" font-style="italic">outlives the function → heap</text>
+
+  <text x="525" y="498" text-anchor="middle" font-size="14" fill="#78716c">All decided at compile time — verify with: go build -gcflags="-m" main.go</text>
+</svg>

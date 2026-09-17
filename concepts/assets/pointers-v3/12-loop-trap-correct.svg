@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 400" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fffdf7"/><stop offset="1" stop-color="#dcfce7"/></linearGradient>
+    <linearGradient id="greenBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#dcfce7"/><stop offset="1" stop-color="#bbf7d0"/></linearGradient>
+    <linearGradient id="grayBox" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f1f5f9"/><stop offset="1" stop-color="#e2e8f0"/></linearGradient>
+    <filter id="shadow" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="5" stdDeviation="6" flood-color="#3a2f22" flood-opacity="0.16"/></filter>
+    <marker id="arrowGreen" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#15803d"/></marker>
+  </defs>
+  <rect width="1000" height="400" rx="24" fill="url(#bg)"/>
+  <text x="500" y="44" text-anchor="middle" font-size="22" font-weight="800" fill="#14532d">✓ CORRECT — a fresh mailbox each lap</text>
+  <text x="500" y="68" text-anchor="middle" font-size="13" fill="#166534" font-family="monospace">for i := 0; i &lt; 3; i++ { v := i; result = append(result, &amp;v) }</text>
+
+  <g filter="url(#shadow)"><rect x="80" y="100" width="200" height="100" rx="16" fill="url(#greenBox)" stroke="#15803d" stroke-width="3"/></g>
+  <text x="180" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">v (0xc0010)</text>
+  <text x="180" y="168" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">= 0</text>
+
+  <g filter="url(#shadow)"><rect x="400" y="100" width="200" height="100" rx="16" fill="url(#greenBox)" stroke="#15803d" stroke-width="3"/></g>
+  <text x="500" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">v (0xc0011)</text>
+  <text x="500" y="168" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">= 1</text>
+
+  <g filter="url(#shadow)"><rect x="720" y="100" width="200" height="100" rx="16" fill="url(#greenBox)" stroke="#15803d" stroke-width="3"/></g>
+  <text x="820" y="140" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">v (0xc0012)</text>
+  <text x="820" y="168" text-anchor="middle" font-size="16" font-weight="700" fill="#14532d">= 2</text>
+
+  <path d="M 180 200 L 180 260" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <path d="M 500 200 L 500 260" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+  <path d="M 820 200 L 820 260" stroke="#15803d" stroke-width="2.5" marker-end="url(#arrowGreen)"/>
+
+  <g filter="url(#shadow)"><rect x="80" y="270" width="200" height="80" rx="14" fill="url(#grayBox)" stroke="#78716c" stroke-width="2.5"/></g>
+  <text x="180" y="316" text-anchor="middle" font-size="16" font-weight="700" fill="#44403c">result[0] = 0</text>
+  <g filter="url(#shadow)"><rect x="400" y="270" width="200" height="80" rx="14" fill="url(#grayBox)" stroke="#78716c" stroke-width="2.5"/></g>
+  <text x="500" y="316" text-anchor="middle" font-size="16" font-weight="700" fill="#44403c">result[1] = 1</text>
+  <g filter="url(#shadow)"><rect x="720" y="270" width="200" height="80" rx="14" fill="url(#grayBox)" stroke="#78716c" stroke-width="2.5"/></g>
+  <text x="820" y="316" text-anchor="middle" font-size="16" font-weight="700" fill="#44403c">result[2] = 2</text>
+
+  <text x="500" y="385" text-anchor="middle" font-size="15" fill="#14532d" font-weight="700">Each iteration declares a NEW v — each pointer keeps its own value</text>
+</svg>
