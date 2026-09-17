@@ -40,3 +40,9 @@ go test -C exercism/go/<exercise-name> ./...
 10. [100 Go Mistakes and How to Avoid Them](https://100go.co/) — common pitfalls and idiomatic fixes
 11. [Exercism Go Track Concepts](https://exercism.org/tracks/go/concepts) — concept-by-concept breakdown backing the Exercism exercises
 12. [Best Go tutorials in town (r/golang)](https://www.reddit.com/r/golang/comments/t8owza/best_go_tutorials_in_town/) — community-recommended Go tutorials and resources
+
+**Pointers**
+
+13. [What's the rule of thumb for when to use pointers? (r/golang)](https://www.reddit.com/r/golang/comments/1m18cpx/whats_the_rule_of_thumb_for_when_to_use_pointers/) — community discussion on when to use pointer vs value semantics
+14. [Google Go Style Guide — Receiver type](https://google.github.io/styleguide/go/decisions.html#receiver-type) — official guidance on choosing pointer vs value receivers
+15. [A Comprehensive Guide to Pointers in Go (Medium)](https://medium.com/@jamal.kaksouri/a-comprehensive-guide-to-pointers-in-go-4acc58eb1f4d) — in-depth walkthrough of pointer concepts and usage in Go
