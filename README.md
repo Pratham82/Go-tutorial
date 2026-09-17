@@ -39,3 +39,4 @@ go test -C exercism/go/<exercise-name> ./...
 9. [Go Standard Library docs](https://pkg.go.dev/std) — searchable reference for every package in the standard library
 10. [100 Go Mistakes and How to Avoid Them](https://100go.co/) — common pitfalls and idiomatic fixes
 11. [Exercism Go Track Concepts](https://exercism.org/tracks/go/concepts) — concept-by-concept breakdown backing the Exercism exercises
+12. [Best Go tutorials in town (r/golang)](https://www.reddit.com/r/golang/comments/t8owza/best_go_tutorials_in_town/) — community-recommended Go tutorials and resources
