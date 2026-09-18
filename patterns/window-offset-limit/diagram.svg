@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 320" font-family="monospace">
+  <style>
+    .cell { stroke: #333; stroke-width: 1; }
+    .idx { font-size: 12px; fill: #555; text-anchor: middle; }
+    .val { font-size: 14px; fill: #111; text-anchor: middle; font-weight: bold; }
+    .label { font-size: 13px; text-anchor: middle; font-weight: bold; }
+    .formula { font-size: 13px; fill: #333; }
+    .arrow { stroke: #333; stroke-width: 1.5; marker-end: url(#arrowhead); }
+  </style>
+  <defs>
+    <marker id="arrowhead" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L6,3 L0,6 Z" fill="#333"/>
+    </marker>
+  </defs>
+
+  <!-- Title -->
+  <text x="450" y="24" text-anchor="middle" font-size="16" font-weight="bold">Window / Offset-Limit Pattern — xs[start:end]</text>
+
+  <!-- Cells for 15 values, 15 * 56 = 840, start x=30 -->
+  <g id="cells">
+    <!-- generated manually below -->
+  </g>
+
+  <!-- Values row -->
+  <!-- Week 1: indexes 0-6, Week 2: 7-13, Week 3: 14 -->
+  <g transform="translate(30,60)">
+    <!-- index 0 -->
+    <rect class="cell" x="0"   y="0" width="56" height="40" fill="#cfe8ff"/>
+    <rect class="cell" x="56"  y="0" width="56" height="40" fill="#cfe8ff"/>
+    <rect class="cell" x="112" y="0" width="56" height="40" fill="#cfe8ff"/>
+    <rect class="cell" x="168" y="0" width="56" height="40" fill="#cfe8ff"/>
+    <rect class="cell" x="224" y="0" width="56" height="40" fill="#cfe8ff"/>
+    <rect class="cell" x="280" y="0" width="56" height="40" fill="#cfe8ff"/>
+    <rect class="cell" x="336" y="0" width="56" height="40" fill="#cfe8ff"/>
+
+    <rect class="cell" x="392" y="0" width="56" height="40" fill="#ffe4b5"/>
+    <rect class="cell" x="448" y="0" width="56" height="40" fill="#ffe4b5"/>
+    <rect class="cell" x="504" y="0" width="56" height="40" fill="#ffe4b5"/>
+    <rect class="cell" x="560" y="0" width="56" height="40" fill="#ffe4b5"/>
+    <rect class="cell" x="616" y="0" width="56" height="40" fill="#ffe4b5"/>
+    <rect class="cell" x="672" y="0" width="56" height="40" fill="#ffe4b5"/>
+    <rect class="cell" x="728" y="0" width="56" height="40" fill="#ffe4b5"/>
+
+    <rect class="cell" x="784" y="0" width="56" height="40" fill="#c8f7c5"/>
+
+    <!-- values -->
+    <text class="val" x="28"  y="25">1</text>
+    <text class="val" x="84"  y="25">2</text>
+    <text class="val" x="140" y="25">3</text>
+    <text class="val" x="196" y="25">4</text>
+    <text class="val" x="252" y="25">5</text>
+    <text class="val" x="308" y="25">6</text>
+    <text class="val" x="364" y="25">7</text>
+    <text class="val" x="420" y="25">8</text>
+    <text class="val" x="476" y="25">9</text>
+    <text class="val" x="532" y="25">10</text>
+    <text class="val" x="588" y="25">11</text>
+    <text class="val" x="644" y="25">12</text>
+    <text class="val" x="700" y="25">13</text>
+    <text class="val" x="756" y="25">14</text>
+    <text class="val" x="812" y="25">15</text>
+
+    <!-- indexes -->
+    <text class="idx" x="28"  y="55">0</text>
+    <text class="idx" x="84"  y="55">1</text>
+    <text class="idx" x="140" y="55">2</text>
+    <text class="idx" x="196" y="55">3</text>
+    <text class="idx" x="252" y="55">4</text>
+    <text class="idx" x="308" y="55">5</text>
+    <text class="idx" x="364" y="55">6</text>
+    <text class="idx" x="420" y="55">7</text>
+    <text class="idx" x="476" y="55">8</text>
+    <text class="idx" x="532" y="55">9</text>
+    <text class="idx" x="588" y="55">10</text>
+    <text class="idx" x="644" y="55">11</text>
+    <text class="idx" x="700" y="55">12</text>
+    <text class="idx" x="756" y="55">13</text>
+    <text class="idx" x="812" y="55">14</text>
+  </g>
+
+  <!-- Week labels + brackets -->
+  <g transform="translate(30,130)">
+    <line x1="0" y1="0" x2="392" y2="0" stroke="#1b6fb0" stroke-width="2"/>
+    <text class="label" x="196" y="20" fill="#1b6fb0">week 1: xs[0:7]</text>
+
+    <line x1="392" y1="0" x2="784" y2="0" stroke="#c07800" stroke-width="2"/>
+    <text class="label" x="588" y="20" fill="#c07800">week 2: xs[7:14]</text>
+
+    <line x1="784" y1="0" x2="840" y2="0" stroke="#2e8b2e" stroke-width="2"/>
+    <text class="label" x="812" y="20" fill="#2e8b2e">wk3</text>
+  </g>
+
+  <!-- Formula box -->
+  <g transform="translate(30,180)">
+    <rect x="0" y="0" width="810" height="110" fill="#f7f7f7" stroke="#ccc"/>
+    <text class="formula" x="16" y="26" font-weight="bold">start = (week - 1) * size</text>
+    <text class="formula" x="16" y="48">end   = min(start + size, len(xs))</text>
+    <text class="formula" x="16" y="70">window = xs[start:end]</text>
+    <text class="formula" x="16" y="96" fill="#555">week=1: start=(1-1)*7=0,  end=min(7,15)=7   -&gt; xs[0:7]</text>
+    <text class="formula" x="16" y="112" fill="#555" font-size="12">week=3: start=(3-1)*7=14, end=min(21,15)=15  -&gt; xs[14:15] (clamped)</text>
+  </g>
+</svg>
