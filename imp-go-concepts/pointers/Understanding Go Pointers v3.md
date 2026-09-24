@@ -360,6 +360,37 @@ func safe(p *int) {
 }
 ```
 
+### Worked Example: Nil vs. Valid Dereference
+
+```go
+func main() {
+    var a *int   // a is nil — never assigned an address
+    var b = 10
+
+    var c *int
+    c = &b       // c now genuinely holds b's address
+
+    *a = *c      // PANIC: a is nil, there's nowhere to write to
+}
+```
+
+What's different between `a` and `c`:
+
+| | `a` | `c` |
+|---|---|---|
+| Declared | `var a *int` | `var c *int` |
+| Assigned an address? | No — still `nil` | Yes — `c = &b` |
+| `*a` / `*c` | invalid — panics | valid — reads/writes `b` |
+
+- **Declaring a pointer doesn't create a target.** `var a *int` only reserves a box that can *hold* an address — it starts empty (`nil`). You must explicitly point it somewhere (`a = &b`, `a = new(int)`, `a = c`) before dereferencing.
+- **`c = &b` creates aliasing.** `c` and `b` aren't independent — they refer to the same memory. `*c = 20` would change `b` itself, and `fmt.Println(b)` would print `20`.
+- **The fix** is to give `a` a valid target before dereferencing, e.g. `a = &b` or `a = c` (now `a` and `c` alias the same `b`, and both `*a` and `*c` are safe):
+  ```go
+  a = &b
+  *a = *c        // now valid — a points at b, just like c does
+  fmt.Println(b) // 10
+  ```
+
 ### ❌ Mistake 3: Over-using pointers for performance
 
 ```go
