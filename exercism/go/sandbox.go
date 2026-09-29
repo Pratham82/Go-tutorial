@@ -45,7 +45,17 @@ func ExtractFancyNumber(fnb FancyNumberBox) int {
 }
 
 func main() {
-	fmt.Println(ExtractFancyNumber(FancyNumber{"10"}))
+	// fmt.Println(ExtractFancyNumber(FancyNumber{"10"}))
+	// fmt.Println(ExtractFancyNumber(AnotherFancyNumber{"4"}))
+	// cows 5
+	// fodderAmt * 10 = 50
+	// fatteningFac 1.5
+	fodderAmt := 50
+	fatteningFact := 1.5
+	cows := 5
+	food := (float64(fodderAmt) * fatteningFact)
+	res := food / float64(cows)
+	fmt.Println(res)
 
 }
 
