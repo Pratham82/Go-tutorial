@@ -1,62 +1,45 @@
 package main
 
-import (
-	"fmt"
-	"strconv"
-)
+import "fmt"
 
-type NumberBox interface {
-	Number() int
+// Resident represents a resident in this city.
+type Resident struct {
+	Name    string
+	Age     int
+	Address map[string]string
 }
 
-// DescribeNumberBox should return a string describing the NumberBox.
-
-func DescribeNumberBox(nb NumberBox) string {
-	unwrapped := nb.Number()
-	return fmt.Sprintf("This is a box containing the number %.1f", float64(unwrapped))
-}
-func DescribeNumber(f float64) string {
-	return fmt.Sprintf("This is the number %.1f", f)
-}
-
-type FancyNumber struct {
-	n string
-}
-
-func (i FancyNumber) Value() string {
-	return i.n
-}
-
-type FancyNumberBox interface {
-	Value() string
-}
-
-// ExtractFancyNumber should return the integer value for a FancyNumber
-// and 0 if any other FancyNumberBox is supplied.
-func ExtractFancyNumber(fnb FancyNumberBox) int {
-	unwrapped := fnb.Value()
-	converted, err := strconv.Atoi(unwrapped)
-
-	if err != nil {
-		return 0
+// NewResident registers a new resident in this city.
+func NewResident(name string, age int, address map[string]string) *Resident {
+	return &Resident{
+		Name:    name,
+		Age:     age,
+		Address: address,
 	}
-
-	return converted
+}
+func (r *Resident) HasRequiredInfo() bool {
+	return r.Name != "" && r.Address["street"] != ""
 }
 
 func main() {
-	// fmt.Println(ExtractFancyNumber(FancyNumber{"10"}))
-	// fmt.Println(ExtractFancyNumber(AnotherFancyNumber{"4"}))
-	// cows 5
-	// fodderAmt * 10 = 50
-	// fatteningFac 1.5
-	fodderAmt := 50
-	fatteningFact := 1.5
-	cows := 5
-	food := (float64(fodderAmt) * fatteningFact)
-	res := food / float64(cows)
-	fmt.Println(res)
+	name1 := "Matthew Sanabria"
+	age1 := 29
+	address1 := map[string]string{"street": "Main St."}
 
+	resident1 := NewResident(name1, age1, address1)
+
+	name2 := "Rob Pike"
+	age2 := 0
+	address2 := make(map[string]string)
+
+	resident2 := NewResident(name2, age2, address2)
+
+	residents := []*Resident{resident1, resident2}
+
+	for _, v := range residents {
+		fmt.Println(v)
+		fmt.Println(v.HasRequiredInfo())
+	}
 }
 
 // Valid dereferencing: c points to b (c = &b), so *c reads/writes b's value.
